@@ -2,12 +2,13 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 /**
- * Welcome to the Image Processing application.
+ * Welcome to Image Processing application.
  * Main class handles user inputs, image loading, and initializing the ImagePainter.
  */
 
@@ -17,7 +18,7 @@ public class Main {
         if (!validateArguments(args)) {      // Stopping program if any of the arguments missing
             return;
         }
-
+        do { 
         String imageFile = args[0];                 // File path of input image
         int squareSize = parseSquareSize(args[1]);  // Size of square for processing image
         if (squareSize == -1) return;
@@ -27,8 +28,22 @@ public class Main {
 
         BufferedImage image = loadImage(imageFile); // Load the image
         if (image == null) return;
+        
+        Scanner sc = new Scanner(System.in);
 
+        
         processImage(image, squareSize, multiThreaded); // Start processing image 
+        System.out.println("Would you like to process another image? : Y/N");
+        String user = sc.next().trim().toUpperCase();
+        if(!user.equals("Y"))
+        	break;
+        System.out.println("Please provide an <image file>, <square_size>, and <processing mode (S|M)>.");
+        imageFile = sc.next();
+        squareSize = sc.nextInt();
+        multiThreaded = sc.nextBoolean();
+        
+        } while(true);
+        
     }
 
     // Validate input arguments for completeness
